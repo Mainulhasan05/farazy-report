@@ -108,14 +108,14 @@ const index = () => {
         {
           testResults.length > 0 && patient &&
           <div className="row">
-            <div className="col-md-6 col-lg-12">
+            <div className="col-md-12 col-lg-12">
               <div className="card">
                 <div className="card-header">
                   Patient's Info
                 </div>
                 <div className="card-body">
                   <div className="row">
-                    <div className="col-md-6 col-lg-12">
+                    <div className="col-md-12 col-lg-12">
                       {/* create a table which will contain patients name phone */}
                       <table className="table table-bordered">
                         <tbody>
@@ -147,7 +147,7 @@ const index = () => {
 
         {/* Done tests */}
         <div className="row">
-          <div className="col-md-6 col-lg-12">
+          <div className="col-md-12 col-lg-12">
             <div className="card">
               <div className="card-header">
                 {testResults.length > 0 ? <div>
@@ -164,7 +164,7 @@ const index = () => {
                     <>
                       <div key={index} className="card-body">
                         <div className="row">
-                          <div className="col-md-6 col-lg-12">
+                          <div className="col-md-12 col-lg-12">
 
                             <table className="table table-bordered">
                               <thead>
