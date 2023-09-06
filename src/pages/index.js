@@ -176,7 +176,7 @@ const index = () => {
                               
                             </table>
 
-                            <br />
+                            
                             
                             {
                               item.result.map((item2, index) => {
