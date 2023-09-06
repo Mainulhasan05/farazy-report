@@ -1,9 +1,20 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 //  test name api =http://59.152.61.146:6200/api/Investigation/GetInvoiceInfo?InvNo=DIA230904101
 // test group api = http://59.152.61.146:6200/api/Investigation/GetInvestigationGroupName?InvNo=DIA230904101
 const index = () => {
-  const [invoiceNo, setInvoiceNo] = useState('')
+  const [invoiceNo, setInvoiceNo] = useState('DIA230904101')
+
+  const loadTestName = async () => {
+    const res = await axios.get(`${process.env.API}/api/Investigation/GetInvoiceInfo?InvNo=${invoiceNo}`)
+    console.log(res.data)
+  }
+  const loadTestGroup = async () => {
+    const res = await axios.get(`${process.env.API}/api/Investigation/GetInvestigationGroupName?InvNo=${invoiceNo}`)
+    console.log(res.data)
+  }
+
 
   return (
     <>
@@ -11,8 +22,8 @@ const index = () => {
     <div className="text-center container alert">
       <div>
       <h3>Get Your Farazy Tested Report</h3>
-      <input onChange={(e)=>setInvoiceNo(e.target.value)} type="text" className="form-control form-control-lg mb-3 text-center display-3"  placeholder='DIA230904106'/>
-      <button className="btn btn-success">Get Report</button>
+      <input onChange={(e)=>setInvoiceNo(e.target.value)} type="text" className="form-control form-control-lg mb-3 text-center display-3"  placeholder='Invoice No' value={invoiceNo}/>
+      <button onClick={loadTestName} className="btn btn-success">Get Report</button>
       </div>
       <br />
       
