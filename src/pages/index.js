@@ -1,15 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-
+// get pone number=http://59.152.61.146:6200/api/Investigation/GetInvestigations?searchTxt=DIA230904105
+//  telephoneNo
 //  test name api =http://59.152.61.146:6200/api/Investigation/GetInvoiceInfo?InvNo=DIA230904101
 // test group api = http://59.152.61.146:6200/api/Investigation/GetInvestigationGroupName?InvNo=DIA230904101
 const index = () => {
+  const [patient, setPatient] = useState(null)
   const [invoiceNo, setInvoiceNo] = useState('DIA230904101')
   const [testResults, setTestResults] = useState([])
 
   const loadTestName = async () => {
+    const res1=await axios.get(`${process.env.API}/api/Investigation/GetInvestigations?searchTxt=${invoiceNo}`)
+    console.log(res1.data)
     const res = await axios.get(`${process.env.API}/api/Investigation/GetInvoiceInfo?InvNo=${invoiceNo}`)
     console.log(res.data)
+    if(res.data.length>0){
+      setPatient({
+        patientName:res.data[0].patientName,
+        age:res.data[0].age,
+        telephoneNo:res1?.data[0]?.telephoneNo,
+        tests:res1?.data[0]?.itemDescription
+      })
+      // also set telephone no from res1
+      // setPatient({...patient,telephoneNo:res1.data.telephoneNo,tests:res1.itemDescription})
+      // append with previous data
+      
+
+    }
+
     setTestResults(res.data)
   }
   const loadTestGroup = async () => {
@@ -17,6 +35,10 @@ const index = () => {
     console.log(res.data)
   }
 
+  useEffect(() => {
+    console.log(patient)
+  }, [patient])
+  
 
   return (
     <>
@@ -31,7 +53,7 @@ const index = () => {
 
         {/* Patient's Info */}
         {
-          testResults.length > 0 &&
+          testResults.length  > 0 && patient &&
           <div className="row">
           <div className="col-md-6 col-lg-12">
             <div className="card">
@@ -46,15 +68,15 @@ const index = () => {
                       <tbody>
                         <tr>
                           <td>Name</td>
-                          <td>{testResults[0]?.patientName}</td>
+                          <td>{patient?.patientName}</td>
                         </tr>
                         <tr>
                           <td>Phone</td>
-                          <td>01700000000</td>
+                          <td>{patient?.telephoneNo}</td>
                         </tr>
                         <tr>
                           <td>Age</td>
-                          <td>{testResults[0]?.age}</td>
+                          <td>{patient?.age}</td>
                         </tr>
                       </tbody>
                     </table>
