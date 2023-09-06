@@ -89,8 +89,11 @@ const index = () => {
   }
   useEffect(() => {
     console.log(patient)
-  }, [patient])
 
+  }, [patient])
+  const tryAPI=async()=>{
+    const res=await axios.get('')
+  }
 
   return (
     <>
