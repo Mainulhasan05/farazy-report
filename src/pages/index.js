@@ -8,28 +8,56 @@ const index = () => {
   const [patient, setPatient] = useState(null)
   const [invoiceNo, setInvoiceNo] = useState('DIA230904101')
   const [testResults, setTestResults] = useState([])
-
   const loadTestName = async () => {
-    const res1=await axios.get(`${process.env.API}/api/Investigation/GetInvestigations?searchTxt=${invoiceNo}`)
-    console.log(res1.data)
-    const res = await axios.get(`${process.env.API}/api/Investigation/GetInvoiceInfo?InvNo=${invoiceNo}`)
-    console.log(res.data)
-    if(res.data.length>0){
-      setPatient({
-        patientName:res.data[0].patientName,
-        age:res.data[0].age,
-        telephoneNo:res1?.data[0]?.telephoneNo,
-        tests:res1?.data[0]?.itemDescription
-      })
-      // also set telephone no from res1
-      // setPatient({...patient,telephoneNo:res1.data.telephoneNo,tests:res1.itemDescription})
-      // append with previous data
-      
-
+    try {
+      // Fetch the first endpoint
+      const res1 = await fetch(`${process.env.API}/api/Investigation/GetInvestigations?searchTxt=${invoiceNo}`);
+      if (!res1.ok) {
+        throw new Error(`Failed to fetch data from ${process.env.API}`);
+      }
+      const data1 = await res1.json();
+      console.log(data1);
+  
+      // Fetch the second endpoint
+      const res2 = await fetch(`${process.env.API}/api/Investigation/GetInvoiceInfo?InvNo=${invoiceNo}`);
+      if (!res2.ok) {
+        throw new Error(`Failed to fetch data from ${process.env.API}`);
+      }
+      const data2 = await res2.json();
+      console.log(data2);
+  
+      if (data2.length > 0) {
+        setPatient({
+          patientName: data2[0].patientName,
+          age: data2[0].age,
+          telephoneNo: data1?.[0]?.telephoneNo,
+          tests: data1?.[0]?.itemDescription,
+        });
+      }
+  
+      setTestResults(data2);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  };
 
-    setTestResults(res.data)
-  }
+  // const loadTestName = async () => {
+  //   const res1=await axios.get(`${process.env.API}/api/Investigation/GetInvestigations?searchTxt=${invoiceNo}`)
+  //   console.log(res1.data)
+  //   const res = await axios.get(`${process.env.API}/api/Investigation/GetInvoiceInfo?InvNo=${invoiceNo}`)
+  //   console.log(res.data)
+  //   if(res.data.length>0){
+  //     setPatient({
+  //       patientName:res.data[0].patientName,
+  //       age:res.data[0].age,
+  //       telephoneNo:res1?.data[0]?.telephoneNo,
+  //       tests:res1?.data[0]?.itemDescription
+  //     })     
+
+  //   }
+
+  //   setTestResults(res.data)
+  // }
   const loadTestGroup = async () => {
     const res = await axios.get(`${process.env.API}/api/Investigation/GetInvestigationGroupName?InvNo=${invoiceNo}`)
     console.log(res.data)
