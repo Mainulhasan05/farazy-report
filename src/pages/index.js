@@ -70,9 +70,7 @@ const index = () => {
 
   return (
     <>
-    <head>
-    <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-    </head>
+    
       <br />
       <div className="text-center container alert">
         <div>
@@ -125,26 +123,38 @@ const index = () => {
           <div className="col-md-6 col-lg-12">
             <div className="card">
               <div className="card-header">
-                 Test's Info
+                 {testResults.length  > 0 ? <div>
+                    <h3>Done Tests</h3>
+                    
+                    
+
+                 </div>  : 'No Test Found'}
               </div>
               <div className="card-body">
+
                 <div className="row">
                   <div className="col-md-6 col-lg-12">
                     {/* create a table which will contain patients name phone */}
                     <table className="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Test Name</th>
+                          <th>Result</th>
+                          <th>Unit</th>
+                          <th>Reference Range</th>
+                        </tr>
+                      </thead>
                       <tbody>
-                        <tr>
-                          <td>Name</td>
-                          <td>Farazy</td>
-                        </tr>
-                        <tr>
-                          <td>Phone</td>
-                          <td>01700000000</td>
-                        </tr>
-                        <tr>
-                          <td>Age</td>
-                          <td>25</td>
-                        </tr>
+                        {
+                          testResults.map((test, index) => (
+                            <tr key={index}>
+                              <td>{test.shortDesc}</td>
+                              <td>{test.result}</td>
+                              <td>{test.unit}</td>
+                              <td>{test.referenceRange}</td>
+                            </tr>
+                          ))
+                        }
                       </tbody>
                     </table>
                   </div>
